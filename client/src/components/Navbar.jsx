@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaHome, FaList, FaPlus, FaChartPie } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
-import { useUserContext } from "../context/userContext";
+import { useUserContext } from "../context/UserContext.js";
 
 function Navbar() {
   const { user, login } = useUserContext();
