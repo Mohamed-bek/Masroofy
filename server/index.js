@@ -27,5 +27,9 @@ mongoose
 app.use("/transaction", transactionRouter);
 app.use("/user", userRouter);
 
+app.get("*", (req, res) => {
+  res.json({ suc: true });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
