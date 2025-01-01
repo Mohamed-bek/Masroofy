@@ -7,7 +7,7 @@ import Reports from "./pages/Reports";
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { useUserContext } from "./context/UserContext.js.js";
+import { useUserContext } from "./context/UserContext.js";
 import About from "./pages/About";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
