@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: "https://masroofy-jade.vercel.app",
     credentials: true,
   })
 );
