@@ -17,17 +17,6 @@ app.use(
   cors({
     origin: "https://masroofy-jade.vercel.app", // Your frontend domain
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "Origin",
-    ],
-    exposedHeaders: ["Set-Cookie"], // If you're using cookies
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
   })
 );
 app.use(cookieParser());
