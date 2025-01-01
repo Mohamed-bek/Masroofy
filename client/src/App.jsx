@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50 w-full">
         <Navbar />
-        <main className="container h-[calc(100dvh-70px)] mx-auto px-4 py-7">
+        <main className="container h-[calc(100dvh-70px)] mx-auto px-3 py-7">
           <Routes>
             <Route path="/" element={user ? <Dashboard /> : <About />} />
             <Route path="/transactions" element={<Transactions />} />
