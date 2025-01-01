@@ -5,66 +5,35 @@ import dotenv from "dotenv";
 import transactionRouter from "./routes/transactions.js";
 import userRouter from "./routes/users.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
-// Initialize environment variables
 dotenv.config();
 
-// Create Express application
 const app = express();
 
-// Configure middleware
 app.use(
   cors({
-    origin: "https://masroofy-jade.vercel.app", // Your frontend domain
+    origin: "https://masroofy-jade.vercel.app",
     credentials: true,
   })
 );
 app.use(cookieParser());
 app.use(express.json());
 
-// Connect to MongoDB
-// We're moving this outside of a function to maintain a connection pool
-let cachedDB = null;
-const connectDB = async () => {
-  if (cachedDB) {
-    return cachedDB;
-  }
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
-  try {
-    const db = await mongoose.connect(process.env.MONGODB_URI);
-    cachedDB = db;
-    console.log("MongoDB connected");
-    return db;
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    throw error;
-  }
-};
+app.use("/transaction", transactionRouter);
+app.use("/user", userRouter);
 
-// Set up routes
-app.use("/api/transaction", transactionRouter);
-app.use("/api/user", userRouter);
-
-// Add error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({
-    message: "Internal Server Error",
-    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
-});
-
-// For local development
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
-// Export the handler for Vercel
-export default async function handler(req, res) {
-  // Ensure database connection
-  await connectDB();
-
-  // Handle the request using our Express app
-  return app(req, res);
-}
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
